@@ -1,6 +1,6 @@
 {
   "name": "aya-pay-merchant",
-  "version": "1.0.8",
+  "version": "1.0.0",
   "description": "MMQR, AYA Pay",
   "keywords": [
     "MMQR",
@@ -18,12 +18,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nawing/AYA-Merchant-API.git"
+    "url": "git+https://github.com/nawing/AYA-Pay-Merchant-API.git"
   },
   "bugs": {
-    "url": "https://github.com/nawing/AYA-Merchant-API/issues"
+    "url": "https://github.com/nawing/AYA-Pay-Merchant-API/issues"
   },
-  "homepage": "https://github.com/nawing/AYA-Merchant-API#readme",
+  "homepage": "https://github.com/nawing/AYA-Pay-Merchant-API#readme",
   "scripts": {
     "build": "npm run clean && tsc && tsc -p tsconfig.cjs.json",
     "clean": "rm -rf dist",
