@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _AYAPayMerchantClass_baseUrl, _AYAPayMerchantClass_consumerKey, _AYAPayMerchantClass_consumerSecret, _AYAPayMerchantClass_decryptionKey, _AYAPayMerchantClass_keyToken, _AYAPayMerchantClass_apiToken;
+var _AYAPayMerchantClass_baseUrl, _AYAPayMerchantClass_consumerKey, _AYAPayMerchantClass_consumerSecret, _AYAPayMerchantClass_decryptionKey, _AYAPayMerchantClass_phone, _AYAPayMerchantClass_password, _AYAPayMerchantClass_keyToken, _AYAPayMerchantClass_apiToken;
 import axios from 'axios';
 const crypto = require('crypto');
 /**
@@ -24,8 +24,9 @@ export function AYAPayMerchantSDK(options) {
         baseUrl: options.baseUrl,
         consumerKey: options.consumerKey,
         consumerSecret: options.consumerSecret,
-        basicKey: options.basicKey,
         decryptionKey: options.decryptionKey,
+        phone: options.phone,
+        password: options.password,
     });
 }
 /**
@@ -39,12 +40,16 @@ class AYAPayMerchantClass {
         _AYAPayMerchantClass_consumerKey.set(this, void 0);
         _AYAPayMerchantClass_consumerSecret.set(this, void 0);
         _AYAPayMerchantClass_decryptionKey.set(this, void 0);
+        _AYAPayMerchantClass_phone.set(this, void 0);
+        _AYAPayMerchantClass_password.set(this, void 0);
         _AYAPayMerchantClass_keyToken.set(this, void 0);
         _AYAPayMerchantClass_apiToken.set(this, void 0);
         __classPrivateFieldSet(this, _AYAPayMerchantClass_baseUrl, options.baseUrl, "f");
         __classPrivateFieldSet(this, _AYAPayMerchantClass_consumerKey, options.consumerKey, "f");
         __classPrivateFieldSet(this, _AYAPayMerchantClass_consumerSecret, options.consumerSecret, "f");
         __classPrivateFieldSet(this, _AYAPayMerchantClass_decryptionKey, options.decryptionKey, "f");
+        __classPrivateFieldSet(this, _AYAPayMerchantClass_phone, options.phone, "f");
+        __classPrivateFieldSet(this, _AYAPayMerchantClass_password, options.password, "f");
     }
     /**
      * basicToken
@@ -58,12 +63,9 @@ class AYAPayMerchantClass {
     }
     /**
      * getToken
-     * @param {string} options.grantType
-     * @param {string} options.phone
-     * @param {string} options.password
      * @returns {Promise<getTokenResponse>}
      */
-    async getToken(options) {
+    async getToken() {
         try {
             const config = {
                 headers: {
@@ -91,12 +93,9 @@ class AYAPayMerchantClass {
     }
     /**
      * login
-     * @param {loginRequest} options
-     * @param {string} options.phone
-     * @param {string} options.password
      * @returns {Promise<loginResponse>}
      */
-    async login(options) {
+    async login() {
         try {
             const config = {
                 headers: {
@@ -105,8 +104,8 @@ class AYAPayMerchantClass {
                 }
             };
             const body = {
-                phone: options.phone,
-                password: options.password,
+                phone: __classPrivateFieldGet(this, _AYAPayMerchantClass_phone, "f"),
+                password: __classPrivateFieldGet(this, _AYAPayMerchantClass_password, "f"),
             };
             const response = await axios.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/om/1.0.0/thirdparty/merchant/login`, body, config);
             const loginResponse = response.data;
@@ -116,6 +115,13 @@ class AYAPayMerchantClass {
         catch (error) {
             console.error(error);
         }
+    }
+    /**
+     * authenticate
+     */
+    async authenticate() {
+        await this.getToken();
+        await this.login();
     }
     /**
      * requestQR
@@ -129,6 +135,7 @@ class AYAPayMerchantClass {
      */
     async requestQR(options) {
         try {
+            await this.authenticate();
             const config = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -159,6 +166,7 @@ class AYAPayMerchantClass {
      */
     async paymentStatusQR(options) {
         try {
+            await this.authenticate();
             const config = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -189,6 +197,7 @@ class AYAPayMerchantClass {
      */
     async requestPush(options) {
         try {
+            await this.authenticate();
             const config = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -219,6 +228,7 @@ class AYAPayMerchantClass {
      */
     async paymentStatusPush(options) {
         try {
+            await this.authenticate();
             const config = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -260,4 +270,4 @@ class AYAPayMerchantClass {
         }
     }
 }
-_AYAPayMerchantClass_baseUrl = new WeakMap(), _AYAPayMerchantClass_consumerKey = new WeakMap(), _AYAPayMerchantClass_consumerSecret = new WeakMap(), _AYAPayMerchantClass_decryptionKey = new WeakMap(), _AYAPayMerchantClass_keyToken = new WeakMap(), _AYAPayMerchantClass_apiToken = new WeakMap();
+_AYAPayMerchantClass_baseUrl = new WeakMap(), _AYAPayMerchantClass_consumerKey = new WeakMap(), _AYAPayMerchantClass_consumerSecret = new WeakMap(), _AYAPayMerchantClass_decryptionKey = new WeakMap(), _AYAPayMerchantClass_phone = new WeakMap(), _AYAPayMerchantClass_password = new WeakMap(), _AYAPayMerchantClass_keyToken = new WeakMap(), _AYAPayMerchantClass_apiToken = new WeakMap();

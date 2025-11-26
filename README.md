@@ -10,6 +10,58 @@ Install the package via npm:
 npm install aya-pay-merchant-api --save
 ```
 
+
+## Implementation IDEA
+```javascript
+import { AYAPayMerchantSDK, SDKOptions } from 'aya-pay-merchant-api';
+
+const options: SDKOptions = {
+  baseUrl: 'https://sandbox.ayapay.com/api', // <<< Request HERE I cannot disclose for security reasons
+  consumerKey: 'YOUR_CONSUMER_KEY',
+  consumerSecret: 'YOUR_CONSUMER_SECRET',
+  decryptionKey: 'YOUR_DECRYPTION_KEY_32_BYTES',
+  phone: 'MERCHANT_APP_PHONE_NUMBER',
+  password: 'MERCHANT_APP_PASSWORD',
+};
+
+const ayaPayClient = AYAPayMerchantSDK(options);
+
+// DEVELOPMENT QR
+const qrResponse = await ayaPayClient.requestQR({
+  amount: 5000,
+  currency: 'MMK',
+  externalTransactionId: 'ORD-' + new Date().getTime(),
+  serviceCode: 'xxx-qr', // << I cannot disclose all of these ENUM for security reasons, Please ask merchant onboarding teams
+  // externalAdditionalData: optional
+})
+console.log(qrResponse)
+
+const qrStatusResponse = await ayaPayClient.paymentStatusQR({
+  referenceNumber: qrResponse.data.referenceNumber,
+  externalTransactionId: qrResponse.data.externalTransactionId,
+})
+console.log(qrStatusResponse)
+
+
+const omResponse = await ayaPayClient.requestPush({
+  amount: 5000,
+  currency: 'MMK',
+  externalTransactionId: 'ORD-' + new Date().getTime(),
+  serviceCode: 'xxx-om', // << I cannot disclose all of these ENUM for security reasons, Please ask merchant onboarding teams
+  // externalAdditionalData: optional
+})
+console.log(omResponse)
+
+const omStatusResponse = await ayaPayClient.paymentStatusPush({
+  referenceNumber: omResponse.data.referenceNumber,
+  externalTransactionId: omResponse.data.externalTransactionId,
+})
+console.log(omStatusResponse)
+
+// Now you can call methods like:
+// await ayaPayClient.getToken({ grantType: 'client_credentials' });
+```
+
 ## 📝 SDK Configuration and Initialization
 
 The SDK requires specific credentials and endpoint information for initialization.

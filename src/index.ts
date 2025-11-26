@@ -44,7 +44,7 @@ export interface PaymentCreateRequest {
   amount: number;
   currency: string;
   externalTransactionId: string;
-  externalAdditionalData: string;
+  externalAdditionalData?: string;
   serviceCode: string;
 }
 export interface PaymentCreateResponse {
@@ -107,8 +107,9 @@ export interface SDKOptions {
   baseUrl: string;
   consumerKey: string;
   consumerSecret: string;
-  basicKey: string;
   decryptionKey: string;
+  phone: string;
+  password: string;
 }
 /**
  * @AYAMerchantSDK
@@ -122,8 +123,9 @@ export function AYAPayMerchantSDK(options: SDKOptions): AYAPayMerchantClass {
     baseUrl: options.baseUrl,
     consumerKey: options.consumerKey,
     consumerSecret: options.consumerSecret,
-    basicKey: options.basicKey,
     decryptionKey: options.decryptionKey,
+    phone: options.phone,
+    password: options.password,
   })
 }
 /**
@@ -137,6 +139,8 @@ class AYAPayMerchantClass {
   readonly #consumerKey: string;
   readonly #consumerSecret: string;
   readonly #decryptionKey: string;
+  readonly #phone: string;
+  readonly #password: string;
 
   #keyToken: string;
   #apiToken: string;
@@ -146,12 +150,14 @@ class AYAPayMerchantClass {
     this.#consumerKey = options.consumerKey;
     this.#consumerSecret = options.consumerSecret;
     this.#decryptionKey = options.decryptionKey;
+    this.#phone = options.phone;
+    this.#password = options.password;
   }
   /**
    * basicToken
    * @returns
    */
-  basicToken(): string {
+  private basicToken(): string {
     const rawString = `${this.#consumerKey}:${this.#consumerSecret}`;
     const buffer: Buffer = Buffer.from(rawString);
     const base64String: string = buffer.toString('base64');
@@ -159,12 +165,9 @@ class AYAPayMerchantClass {
   }
   /**
    * getToken
-   * @param {string} options.grantType
-   * @param {string} options.phone
-   * @param {string} options.password
    * @returns {Promise<getTokenResponse>}
    */
-  public async getToken(options): Promise<getTokenResponse> {
+  private async getToken(): Promise<getTokenResponse> {
     try {
       const config = {
         headers: {
@@ -196,12 +199,9 @@ class AYAPayMerchantClass {
   }
   /**
    * login
-   * @param {loginRequest} options
-   * @param {string} options.phone
-   * @param {string} options.password
    * @returns {Promise<loginResponse>}
    */
-  public async login(options: loginRequest): Promise<loginResponse> {
+  private async login(): Promise<loginResponse> {
     try {
       const config = {
         headers: {
@@ -210,8 +210,8 @@ class AYAPayMerchantClass {
         }
       };
       const body = {
-        phone: options.phone,
-        password: options.password,
+        phone: this.#phone,
+        password: this.#password,
       }
       const response = await axios.post(`${this.#baseUrl}/om/1.0.0/thirdparty/merchant/login`, body, config);
       const loginResponse = response.data as loginResponse;
@@ -220,6 +220,13 @@ class AYAPayMerchantClass {
     } catch (error) {
       console.error(error)
     }
+  }
+  /**
+   * authenticate
+   */
+  public async authenticate(): Promise<void> {
+    await this.getToken()
+    await this.login()
   }
   /**
    * requestQR
@@ -233,6 +240,7 @@ class AYAPayMerchantClass {
    */
   public async requestQR(options: PaymentCreateRequest): Promise<PaymentCreateResponse> {
     try {
+      await this.authenticate();
       const config = {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -262,6 +270,7 @@ class AYAPayMerchantClass {
    */
   public async paymentStatusQR(options: PaymentStatusRequest): Promise<PaymentStatusResponse> {
     try {
+      await this.authenticate();
       const config = {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -291,6 +300,7 @@ class AYAPayMerchantClass {
    */
   public async requestPush(options: PaymentCreateRequest): Promise<PaymentCreateResponse> {
     try {
+      await this.authenticate();
       const config = {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -320,6 +330,7 @@ class AYAPayMerchantClass {
    */
   public async paymentStatusPush(options: PaymentStatusRequest): Promise<PaymentStatusResponse> {
     try {
+      await this.authenticate();
       const config = {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

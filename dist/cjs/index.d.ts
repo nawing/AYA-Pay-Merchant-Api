@@ -42,7 +42,7 @@ export interface PaymentCreateRequest {
     amount: number;
     currency: string;
     externalTransactionId: string;
-    externalAdditionalData: string;
+    externalAdditionalData?: string;
     serviceCode: string;
 }
 export interface PaymentCreateResponse {
@@ -99,8 +99,9 @@ export interface SDKOptions {
     baseUrl: string;
     consumerKey: string;
     consumerSecret: string;
-    basicKey: string;
     decryptionKey: string;
+    phone: string;
+    password: string;
 }
 /**
  * @AYAMerchantSDK
@@ -122,23 +123,21 @@ declare class AYAPayMerchantClass {
      * basicToken
      * @returns
      */
-    basicToken(): string;
+    private basicToken;
     /**
      * getToken
-     * @param {string} options.grantType
-     * @param {string} options.phone
-     * @param {string} options.password
      * @returns {Promise<getTokenResponse>}
      */
-    getToken(options: any): Promise<getTokenResponse>;
+    private getToken;
     /**
      * login
-     * @param {loginRequest} options
-     * @param {string} options.phone
-     * @param {string} options.password
      * @returns {Promise<loginResponse>}
      */
-    login(options: loginRequest): Promise<loginResponse>;
+    private login;
+    /**
+     * authenticate
+     */
+    authenticate(): Promise<void>;
     /**
      * requestQR
      * @param {PaymentCreateRequest} options
