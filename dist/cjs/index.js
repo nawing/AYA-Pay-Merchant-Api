@@ -13,7 +13,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _AYAPayMerchantClass_baseUrl, _AYAPayMerchantClass_consumerKey, _AYAPayMerchantClass_consumerSecret, _AYAPayMerchantClass_basicKey, _AYAPayMerchantClass_decryptionKey, _AYAPayMerchantClass_keyToken, _AYAPayMerchantClass_apiToken;
+var _AYAPayMerchantClass_baseUrl, _AYAPayMerchantClass_consumerKey, _AYAPayMerchantClass_consumerSecret, _AYAPayMerchantClass_decryptionKey, _AYAPayMerchantClass_keyToken, _AYAPayMerchantClass_apiToken;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AYAPayMerchantSDK = AYAPayMerchantSDK;
 const axios_1 = __importDefault(require("axios"));
@@ -44,14 +44,12 @@ class AYAPayMerchantClass {
         _AYAPayMerchantClass_baseUrl.set(this, void 0);
         _AYAPayMerchantClass_consumerKey.set(this, void 0);
         _AYAPayMerchantClass_consumerSecret.set(this, void 0);
-        _AYAPayMerchantClass_basicKey.set(this, void 0);
         _AYAPayMerchantClass_decryptionKey.set(this, void 0);
         _AYAPayMerchantClass_keyToken.set(this, void 0);
         _AYAPayMerchantClass_apiToken.set(this, void 0);
         __classPrivateFieldSet(this, _AYAPayMerchantClass_baseUrl, options.baseUrl, "f");
         __classPrivateFieldSet(this, _AYAPayMerchantClass_consumerKey, options.consumerKey, "f");
         __classPrivateFieldSet(this, _AYAPayMerchantClass_consumerSecret, options.consumerSecret, "f");
-        __classPrivateFieldSet(this, _AYAPayMerchantClass_basicKey, options.basicKey, "f");
         __classPrivateFieldSet(this, _AYAPayMerchantClass_decryptionKey, options.decryptionKey, "f");
     }
     /**
@@ -268,4 +266,4 @@ class AYAPayMerchantClass {
         }
     }
 }
-_AYAPayMerchantClass_baseUrl = new WeakMap(), _AYAPayMerchantClass_consumerKey = new WeakMap(), _AYAPayMerchantClass_consumerSecret = new WeakMap(), _AYAPayMerchantClass_basicKey = new WeakMap(), _AYAPayMerchantClass_decryptionKey = new WeakMap(), _AYAPayMerchantClass_keyToken = new WeakMap(), _AYAPayMerchantClass_apiToken = new WeakMap();
+_AYAPayMerchantClass_baseUrl = new WeakMap(), _AYAPayMerchantClass_consumerKey = new WeakMap(), _AYAPayMerchantClass_consumerSecret = new WeakMap(), _AYAPayMerchantClass_decryptionKey = new WeakMap(), _AYAPayMerchantClass_keyToken = new WeakMap(), _AYAPayMerchantClass_apiToken = new WeakMap();
