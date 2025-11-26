@@ -1,4 +1,4 @@
-# 📘 AYA Pay Merchant API Integration Documentation
+# 📘 AYA Pay Merchant API Integration Documentation (APIM)
 
 This document provides a professional reference for integrating the **AYAPayMerchant** Node.js/TypeScript package into your application for handling payment and authentication flows.
 
