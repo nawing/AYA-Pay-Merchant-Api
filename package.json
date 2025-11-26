@@ -1,7 +1,7 @@
 {
-  "name": "aya-pay-merchant",
-  "version": "1.0.0",
-  "description": "MMQR, AYA Pay",
+  "name": "aya-pay-merchant-api",
+  "version": "1.0.1",
+  "description": "MMQR, AYA Pay - Integration Package",
   "keywords": [
     "MMQR",
     "AYA Pay"
