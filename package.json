@@ -1,0 +1,43 @@
+{
+  "name": "aya-pay-merchant-api",
+  "version": "1.0.8",
+  "description": "MMQR, AYA Pay",
+  "keywords": [
+    "MMQR",
+    "AYA Pay"
+  ],
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/esm/index.d.ts"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nawing/AYA-Merchant-API.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nawing/AYA-Merchant-API/issues"
+  },
+  "homepage": "https://github.com/nawing/AYA-Merchant-API#readme",
+  "scripts": {
+    "build": "npm run clean && tsc && tsc -p tsconfig.cjs.json",
+    "clean": "rm -rf dist",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "typescript": "^5.3.3"
+  },
+  "author": "Naw Ing",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.13.2",
+    "crypto": "^1.0.1",
+    "dotenv": "^17.2.2"
+  }
+}
