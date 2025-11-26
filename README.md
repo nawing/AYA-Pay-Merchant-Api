@@ -7,7 +7,7 @@ This document provides a professional reference for integrating the **AYAPayMerc
 Install the package via npm:
 
 ```bash
-npm install aya-pay-merchant --save
+npm install aya-pay-merchant-api --save
 ```
 
 ## 📝 SDK Configuration and Initialization
@@ -31,7 +31,7 @@ This configuration object is passed to the initialization function.
 The `AYAPayMerchantSDK` function returns a class instance containing all core methods.
 
 ```javascript
-import { AYAPayMerchantSDK, SDKOptions } from 'aya-pay-merchant';
+import { AYAPayMerchantSDK, SDKOptions } from 'aya-pay-merchant-api';
 
 const options: SDKOptions = {
   baseUrl: 'https://sandbox.ayapay.com/api', // <<< Request HERE I cannot disclose for security reasons
