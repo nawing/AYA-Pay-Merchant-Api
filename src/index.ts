@@ -86,14 +86,8 @@ export interface PaymentStatusResponse {
  * @Callback
  */
 export interface CallbackEncoded {
-  paymentResult: string;
-  checksum: string;
+  paymentResult?: string;
   refundResult?: string;
-  externalTransactionId: string;
-  payByOther: string;
-  debitorName: string;
-  mmqrRefId: string;
-  walletName: string;
 }
 
 export interface CallbackDecoded {
@@ -407,17 +401,30 @@ class AYAPayMerchantClass {
    * verifyCallback
    * @param {CallbackEncoded} options
    * @param {string} options.paymentResult
-   * @param {string} options.checksum
-   * @param {string} options.externalTransactionId
-   * @param {string} options.payByOtherPay
-   * @param {string} options.debitorName
-   * @param {string} options.mmqrRefId
-   * @param {string} options.walletName
    * @returns {Promise<CallbackDecoded>}
    */
   public async verifyCallback(options: CallbackEncoded): Promise<CallbackDecoded> {
     try {
       const cipherRaw = Buffer.from(options.paymentResult, 'base64');
+      const key = Buffer.from(this.#decryptionKey);
+      const decipher = crypto.createDecipheriv('aes-256-ecb', key, null);
+      let decrypted = decipher.update(cipherRaw, undefined, 'utf8');
+      decrypted += decipher.final('utf8');
+      const result: CallbackDecoded = JSON.parse(decrypted) as CallbackDecoded;
+      return result as CallbackDecoded;
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  /**
+   * verifyCallbackRefund
+   * @param {CallbackEncoded} options
+   * @param {string} options.refundResult
+   * @returns {Promise<CallbackDecoded>}
+   */
+  public async verifyCallbackRefund(options: CallbackEncoded): Promise<CallbackDecoded> {
+    try {
+      const cipherRaw = Buffer.from(options.refundResult, 'base64');
       const key = Buffer.from(this.#decryptionKey);
       const decipher = crypto.createDecipheriv('aes-256-ecb', key, null);
       let decrypted = decipher.update(cipherRaw, undefined, 'utf8');

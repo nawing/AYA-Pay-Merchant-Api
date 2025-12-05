@@ -84,14 +84,8 @@ export interface PaymentStatusResponse {
  * @Callback
  */
 export interface CallbackEncoded {
-    paymentResult: string;
-    checksum: string;
+    paymentResult?: string;
     refundResult?: string;
-    externalTransactionId: string;
-    payByOther: string;
-    debitorName: string;
-    mmqrRefId: string;
-    walletName: string;
 }
 export interface CallbackDecoded {
     name: string;
@@ -239,14 +233,15 @@ declare class AYAPayMerchantClass {
      * verifyCallback
      * @param {CallbackEncoded} options
      * @param {string} options.paymentResult
-     * @param {string} options.checksum
-     * @param {string} options.externalTransactionId
-     * @param {string} options.payByOtherPay
-     * @param {string} options.debitorName
-     * @param {string} options.mmqrRefId
-     * @param {string} options.walletName
      * @returns {Promise<CallbackDecoded>}
      */
     verifyCallback(options: CallbackEncoded): Promise<CallbackDecoded>;
+    /**
+     * verifyCallbackRefund
+     * @param {CallbackEncoded} options
+     * @param {string} options.refundResult
+     * @returns {Promise<CallbackDecoded>}
+     */
+    verifyCallbackRefund(options: CallbackEncoded): Promise<CallbackDecoded>;
 }
 export {};

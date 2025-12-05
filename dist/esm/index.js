@@ -251,17 +251,31 @@ class AYAPayMerchantClass {
      * verifyCallback
      * @param {CallbackEncoded} options
      * @param {string} options.paymentResult
-     * @param {string} options.checksum
-     * @param {string} options.externalTransactionId
-     * @param {string} options.payByOtherPay
-     * @param {string} options.debitorName
-     * @param {string} options.mmqrRefId
-     * @param {string} options.walletName
      * @returns {Promise<CallbackDecoded>}
      */
     async verifyCallback(options) {
         try {
             const cipherRaw = Buffer.from(options.paymentResult, 'base64');
+            const key = Buffer.from(__classPrivateFieldGet(this, _AYAPayMerchantClass_decryptionKey, "f"));
+            const decipher = crypto.createDecipheriv('aes-256-ecb', key, null);
+            let decrypted = decipher.update(cipherRaw, undefined, 'utf8');
+            decrypted += decipher.final('utf8');
+            const result = JSON.parse(decrypted);
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+    /**
+     * verifyCallbackRefund
+     * @param {CallbackEncoded} options
+     * @param {string} options.refundResult
+     * @returns {Promise<CallbackDecoded>}
+     */
+    async verifyCallbackRefund(options) {
+        try {
+            const cipherRaw = Buffer.from(options.refundResult, 'base64');
             const key = Buffer.from(__classPrivateFieldGet(this, _AYAPayMerchantClass_decryptionKey, "f"));
             const decipher = crypto.createDecipheriv('aes-256-ecb', key, null);
             let decrypted = decipher.update(cipherRaw, undefined, 'utf8');
