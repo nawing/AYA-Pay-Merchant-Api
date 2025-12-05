@@ -11,7 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _AYAPayMerchantClass_baseUrl, _AYAPayMerchantClass_consumerKey, _AYAPayMerchantClass_consumerSecret, _AYAPayMerchantClass_decryptionKey, _AYAPayMerchantClass_phone, _AYAPayMerchantClass_password, _AYAPayMerchantClass_keyToken, _AYAPayMerchantClass_apiToken;
 import axios from 'axios';
-const crypto = require('crypto');
+import crypto from 'crypto';
 /**
  * @AYAMerchantSDK
  * @AYAMerchantSDK
@@ -250,20 +250,24 @@ class AYAPayMerchantClass {
     /**
      * verifyCallback
      * @param {CallbackEncoded} options
-     * @param {string} options.referenceNumber
+     * @param {string} options.paymentResult
+     * @param {string} options.checksum
      * @param {string} options.externalTransactionId
+     * @param {string} options.payByOtherPay
+     * @param {string} options.debitorName
+     * @param {string} options.mmqrRefId
+     * @param {string} options.walletName
      * @returns {Promise<CallbackDecoded>}
      */
     async verifyCallback(options) {
         try {
-            const cipher = 'aes-256-ecb';
             const cipherRaw = Buffer.from(options.paymentResult, 'base64');
             const key = Buffer.from(__classPrivateFieldGet(this, _AYAPayMerchantClass_decryptionKey, "f"));
-            const decipher = crypto.createDecipheriv(cipher, key, null);
-            decipher.setAutoPadding(true);
+            const decipher = crypto.createDecipheriv('aes-256-ecb', key, null);
             let decrypted = decipher.update(cipherRaw, undefined, 'utf8');
             decrypted += decipher.final('utf8');
-            return decrypted;
+            const result = JSON.parse(decrypted);
+            return result;
         }
         catch (error) {
             console.error(error);

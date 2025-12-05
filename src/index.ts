@@ -1,5 +1,5 @@
 import axios from 'axios';
-const crypto = require('crypto');
+import crypto from 'crypto';
 /**
  * @Login
  * @Login
@@ -87,15 +87,70 @@ export interface PaymentStatusResponse {
  */
 export interface CallbackEncoded {
   paymentResult: string;
-  refundResult: string;
+  checksum: string;
+  refundResult?: string;
   externalTransactionId: string;
+  payByOther: string;
+  debitorName: string;
+  mmqrRefId: string;
+  walletName: string;
 }
 
 export interface CallbackDecoded {
-  // err: number;
-  // message: string;
-  // status: string;
-  // transRefId: string;
+  name: string;
+  desc: string;
+  currency: string;
+  fees: {
+    debitFee: number;
+    creditFee: number;
+  };
+  status: string;
+  createdAt: string;
+  transRefId: string;
+  code: string;
+  extMachId: string;
+  externalTransactionId: string;
+  referenceNumber: string;
+  totalAmount: number;
+  amount: number;
+  externalAdditionalData: string;
+  refFields: {
+    OFFERID: string;
+    SENDERCLIENT: string;
+    SENDERID: string;
+    CURRENCY: string;
+    RECEIVERCLIENT: string;
+    TRANSACTIONID: string;
+    REFERENCENUMBER: string;
+    AMOUNT: number;
+    RECEIVERPHONE: string;
+    MESSAGE: string;
+    VOUCHER: string;
+    REQUESTID: string;
+    SERVICEID: string;
+    SUBUSERCLIENT: string;
+    SHOPID: string;
+    DEVICEID: string;
+    MACHID: string;
+    SUBUSERPHONE: string;
+    SENDERPHONE: string;
+    SENDERUSERID: string;
+    RECEIVERUSERID: string;
+    thirdpartyData: any;
+    TRANSREFID: string;
+    IP: string;
+    USERID: string;
+  };
+  customer: {
+    id: string;
+    name: string;
+    phone: string;
+  };
+  merchant: {
+    id: string;
+    name: string;
+    phone: string;
+  };
 }
 
 /**
@@ -351,20 +406,24 @@ class AYAPayMerchantClass {
   /**
    * verifyCallback
    * @param {CallbackEncoded} options
-   * @param {string} options.referenceNumber
+   * @param {string} options.paymentResult
+   * @param {string} options.checksum
    * @param {string} options.externalTransactionId
+   * @param {string} options.payByOtherPay
+   * @param {string} options.debitorName
+   * @param {string} options.mmqrRefId
+   * @param {string} options.walletName
    * @returns {Promise<CallbackDecoded>}
    */
   public async verifyCallback(options: CallbackEncoded): Promise<CallbackDecoded> {
     try {
-      const cipher = 'aes-256-ecb';
       const cipherRaw = Buffer.from(options.paymentResult, 'base64');
       const key = Buffer.from(this.#decryptionKey);
-      const decipher = crypto.createDecipheriv(cipher, key, null);
-      decipher.setAutoPadding(true);
+      const decipher = crypto.createDecipheriv('aes-256-ecb', key, null);
       let decrypted = decipher.update(cipherRaw, undefined, 'utf8');
       decrypted += decipher.final('utf8');
-      return decrypted as CallbackDecoded
+      const result: CallbackDecoded = JSON.parse(decrypted) as CallbackDecoded;
+      return result as CallbackDecoded;
     } catch (error) {
       console.error(error)
     }
