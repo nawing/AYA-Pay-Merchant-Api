@@ -13,7 +13,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _AYAPayMerchantClass_baseUrl, _AYAPayMerchantClass_consumerKey, _AYAPayMerchantClass_consumerSecret, _AYAPayMerchantClass_decryptionKey, _AYAPayMerchantClass_phone, _AYAPayMerchantClass_password, _AYAPayMerchantClass_keyToken, _AYAPayMerchantClass_apiToken;
+var _AYAPayMerchantClass_baseUrl, _AYAPayMerchantClass_prefixUrl, _AYAPayMerchantClass_consumerKey, _AYAPayMerchantClass_consumerSecret, _AYAPayMerchantClass_decryptionKey, _AYAPayMerchantClass_phone, _AYAPayMerchantClass_password, _AYAPayMerchantClass_keyToken, _AYAPayMerchantClass_apiToken;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AYAPayMerchantSDK = AYAPayMerchantSDK;
 const axios_1 = __importDefault(require("axios"));
@@ -28,6 +28,7 @@ const crypto_1 = __importDefault(require("crypto"));
 function AYAPayMerchantSDK(options) {
     return new AYAPayMerchantClass({
         baseUrl: options.baseUrl,
+        prefixUrl: options.prefixUrl,
         consumerKey: options.consumerKey,
         consumerSecret: options.consumerSecret,
         decryptionKey: options.decryptionKey,
@@ -43,6 +44,7 @@ function AYAPayMerchantSDK(options) {
 class AYAPayMerchantClass {
     constructor(options) {
         _AYAPayMerchantClass_baseUrl.set(this, void 0);
+        _AYAPayMerchantClass_prefixUrl.set(this, void 0);
         _AYAPayMerchantClass_consumerKey.set(this, void 0);
         _AYAPayMerchantClass_consumerSecret.set(this, void 0);
         _AYAPayMerchantClass_decryptionKey.set(this, void 0);
@@ -51,6 +53,7 @@ class AYAPayMerchantClass {
         _AYAPayMerchantClass_keyToken.set(this, void 0);
         _AYAPayMerchantClass_apiToken.set(this, void 0);
         __classPrivateFieldSet(this, _AYAPayMerchantClass_baseUrl, options.baseUrl, "f");
+        __classPrivateFieldSet(this, _AYAPayMerchantClass_prefixUrl, options.prefixUrl, "f");
         __classPrivateFieldSet(this, _AYAPayMerchantClass_consumerKey, options.consumerKey, "f");
         __classPrivateFieldSet(this, _AYAPayMerchantClass_consumerSecret, options.consumerSecret, "f");
         __classPrivateFieldSet(this, _AYAPayMerchantClass_decryptionKey, options.decryptionKey, "f");
@@ -113,7 +116,7 @@ class AYAPayMerchantClass {
                 phone: __classPrivateFieldGet(this, _AYAPayMerchantClass_phone, "f"),
                 password: __classPrivateFieldGet(this, _AYAPayMerchantClass_password, "f"),
             };
-            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/om/1.0.0/thirdparty/merchant/login`, body, config);
+            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/login`, body, config);
             const loginResponse = response.data;
             __classPrivateFieldSet(this, _AYAPayMerchantClass_apiToken, loginResponse.token.token, "f");
             return loginResponse;
@@ -156,7 +159,7 @@ class AYAPayMerchantClass {
                 externalAdditionalData: options.externalAdditionalData,
                 serviceCode: options.serviceCode,
             };
-            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/om/1.0.0/thirdparty/merchant/v2/requestQRPayment`, body, config);
+            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/v2/requestQRPayment`, body, config);
             return response.data;
         }
         catch (error) {
@@ -184,7 +187,7 @@ class AYAPayMerchantClass {
                 externalTransactionId: options.externalTransactionId,
                 referenceNumber: options.referenceNumber,
             };
-            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/om/1.0.0/thirdparty/merchant/checkQRPayment`, body, config);
+            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/checkQRPayment`, body, config);
             return response.data;
         }
         catch (error) {
@@ -218,7 +221,7 @@ class AYAPayMerchantClass {
                 externalAdditionalData: options.externalAdditionalData,
                 serviceCode: options.serviceCode,
             };
-            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/om/1.0.0/thirdparty/merchant/v2/requestPushPayment`, body, config);
+            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/v2/requestPushPayment`, body, config);
             return response.data;
         }
         catch (error) {
@@ -246,7 +249,7 @@ class AYAPayMerchantClass {
                 externalTransactionId: options.externalTransactionId,
                 referenceNumber: options.referenceNumber,
             };
-            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/om/1.0.0/thirdparty/merchant/checkRequestPayment`, body, config);
+            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/checkRequestPayment`, body, config);
             return response.data;
         }
         catch (error) {
@@ -294,4 +297,4 @@ class AYAPayMerchantClass {
         }
     }
 }
-_AYAPayMerchantClass_baseUrl = new WeakMap(), _AYAPayMerchantClass_consumerKey = new WeakMap(), _AYAPayMerchantClass_consumerSecret = new WeakMap(), _AYAPayMerchantClass_decryptionKey = new WeakMap(), _AYAPayMerchantClass_phone = new WeakMap(), _AYAPayMerchantClass_password = new WeakMap(), _AYAPayMerchantClass_keyToken = new WeakMap(), _AYAPayMerchantClass_apiToken = new WeakMap();
+_AYAPayMerchantClass_baseUrl = new WeakMap(), _AYAPayMerchantClass_prefixUrl = new WeakMap(), _AYAPayMerchantClass_consumerKey = new WeakMap(), _AYAPayMerchantClass_consumerSecret = new WeakMap(), _AYAPayMerchantClass_decryptionKey = new WeakMap(), _AYAPayMerchantClass_phone = new WeakMap(), _AYAPayMerchantClass_password = new WeakMap(), _AYAPayMerchantClass_keyToken = new WeakMap(), _AYAPayMerchantClass_apiToken = new WeakMap();

@@ -150,6 +150,7 @@ export interface CallbackDecoded {
  */
 export interface SDKOptions {
     baseUrl: string;
+    prefixUrl: string;
     consumerKey: string;
     consumerSecret: string;
     decryptionKey: string;

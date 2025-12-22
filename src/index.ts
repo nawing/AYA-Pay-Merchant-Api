@@ -154,6 +154,7 @@ export interface CallbackDecoded {
  */
 export interface SDKOptions {
   baseUrl: string;
+  prefixUrl: string;
   consumerKey: string;
   consumerSecret: string;
   decryptionKey: string;
@@ -170,6 +171,7 @@ export interface SDKOptions {
 export function AYAPayMerchantSDK(options: SDKOptions): AYAPayMerchantClass {
   return new AYAPayMerchantClass({
     baseUrl: options.baseUrl,
+    prefixUrl: options.prefixUrl,
     consumerKey: options.consumerKey,
     consumerSecret: options.consumerSecret,
     decryptionKey: options.decryptionKey,
@@ -185,6 +187,7 @@ export function AYAPayMerchantSDK(options: SDKOptions): AYAPayMerchantClass {
 class AYAPayMerchantClass {
 
   readonly #baseUrl: string;
+  readonly #prefixUrl: string;
   readonly #consumerKey: string;
   readonly #consumerSecret: string;
   readonly #decryptionKey: string;
@@ -196,6 +199,7 @@ class AYAPayMerchantClass {
 
   constructor(options: SDKOptions) {
     this.#baseUrl = options.baseUrl;
+    this.#prefixUrl = options.prefixUrl;
     this.#consumerKey = options.consumerKey;
     this.#consumerSecret = options.consumerSecret;
     this.#decryptionKey = options.decryptionKey;
@@ -262,7 +266,7 @@ class AYAPayMerchantClass {
         phone: this.#phone,
         password: this.#password,
       }
-      const response = await axios.post(`${this.#baseUrl}/om/1.0.0/thirdparty/merchant/login`, body, config);
+      const response = await axios.post(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/login`, body, config);
       const loginResponse = response.data as loginResponse;
       this.#apiToken = loginResponse.token.token;
       return loginResponse as loginResponse;
@@ -304,7 +308,7 @@ class AYAPayMerchantClass {
         externalAdditionalData: options.externalAdditionalData,
         serviceCode: options.serviceCode,
       }
-      const response = await axios.post(`${this.#baseUrl}/om/1.0.0/thirdparty/merchant/v2/requestQRPayment`, body, config);
+      const response = await axios.post(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/v2/requestQRPayment`, body, config);
       return response.data as PaymentCreateResponse
     } catch (error) {
       console.error(error)
@@ -331,7 +335,7 @@ class AYAPayMerchantClass {
         externalTransactionId: options.externalTransactionId,
         referenceNumber: options.referenceNumber,
       }
-      const response = await axios.post(`${this.#baseUrl}/om/1.0.0/thirdparty/merchant/checkQRPayment`, body, config);
+      const response = await axios.post(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/checkQRPayment`, body, config);
       return response.data as PaymentStatusResponse
     } catch (error) {
       console.error(error)
@@ -364,7 +368,7 @@ class AYAPayMerchantClass {
         externalAdditionalData: options.externalAdditionalData,
         serviceCode: options.serviceCode,
       }
-      const response = await axios.post(`${this.#baseUrl}/om/1.0.0/thirdparty/merchant/v2/requestPushPayment`, body, config);
+      const response = await axios.post(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/v2/requestPushPayment`, body, config);
       return response.data as PaymentCreateResponse
     } catch (error) {
       console.error(error)
@@ -391,7 +395,7 @@ class AYAPayMerchantClass {
         externalTransactionId: options.externalTransactionId,
         referenceNumber: options.referenceNumber,
       }
-      const response = await axios.post(`${this.#baseUrl}/om/1.0.0/thirdparty/merchant/checkRequestPayment`, body, config);
+      const response = await axios.post(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/checkRequestPayment`, body, config);
       return response.data as PaymentStatusResponse
     } catch (error) {
       console.error(error)

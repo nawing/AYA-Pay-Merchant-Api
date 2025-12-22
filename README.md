@@ -16,12 +16,13 @@ npm install aya-pay-merchant-api --save
 import { AYAPayMerchantSDK, SDKOptions } from 'aya-pay-merchant-api';
 
 const options: SDKOptions = {
-  baseUrl: 'https://sandbox.ayapay.com/api', // <<< Request HERE I cannot disclose for security reasons
+  baseUrl: 'https://sandboxxxxx.aya-payx.com/api', // <<< Request AYA Team. I cannot disclose here for security reasons
+  prefixUrl: 'xxx',  // <<< Request AYA Team. I cannot disclose here for security reasons
   consumerKey: 'YOUR_CONSUMER_KEY',
   consumerSecret: 'YOUR_CONSUMER_SECRET',
   decryptionKey: 'YOUR_DECRYPTION_KEY_32_BYTES',
   phone: 'MERCHANT_APP_PHONE_NUMBER',
-  password: 'MERCHANT_APP_PASSWORD',
+  password: 'MERCHANT_APP_PASSWORD', // Password Or Pincode
 };
 
 const ayaPayClient = AYAPayMerchantSDK(options);
