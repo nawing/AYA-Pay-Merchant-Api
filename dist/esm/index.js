@@ -134,6 +134,8 @@ class AYAPayMerchantClass {
      * @param {string} options.externalTransactionId
      * @param {string} options.externalAdditionalData
      * @param {string} options.serviceCode
+     * @param {boolean} options.MMQR
+     * @param {number} options.timelimit
      * @returns {Promise<PaymentCreateResponse>}
      */
     async requestQR(options) {
@@ -152,6 +154,8 @@ class AYAPayMerchantClass {
                 externalTransactionId: options.externalTransactionId,
                 externalAdditionalData: options.externalAdditionalData,
                 serviceCode: options.serviceCode,
+                MMQR: options.MMQR,
+                timelimit: options.timelimit,
             };
             const response = await axios.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/v2/requestQRPayment`, body, config);
             return response.data;

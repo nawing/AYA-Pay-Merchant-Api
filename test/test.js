@@ -39,7 +39,9 @@ const start = async () => {
     amount: 5000,
     currency: 'MMK',
     externalTransactionId: 'ORD-' + new Date().getTime(),
-    serviceCode: 'myantel-qr'
+    serviceCode: 'myantel-qr',
+    MMQR: true,
+    timelimit: 5
   })
   console.log(qrResponse)
   const end3Time = performance.now();

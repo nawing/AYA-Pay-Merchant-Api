@@ -46,6 +46,8 @@ export interface PaymentCreateRequest {
   externalTransactionId: string;
   externalAdditionalData?: string;
   serviceCode: string;
+  MMQR: boolean;
+  timelimit: number;
 }
 export interface PaymentCreateResponse {
   err: number;
@@ -289,6 +291,8 @@ class AYAPayMerchantClass {
    * @param {string} options.externalTransactionId
    * @param {string} options.externalAdditionalData
    * @param {string} options.serviceCode
+   * @param {boolean} options.MMQR
+   * @param {number} options.timelimit
    * @returns {Promise<PaymentCreateResponse>}
    */
   public async requestQR(options: PaymentCreateRequest): Promise<PaymentCreateResponse> {
@@ -307,6 +311,8 @@ class AYAPayMerchantClass {
         externalTransactionId: options.externalTransactionId,
         externalAdditionalData: options.externalAdditionalData,
         serviceCode: options.serviceCode,
+        MMQR: options.MMQR,
+        timelimit: options.timelimit,
       }
       const response = await axios.post(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/v2/requestQRPayment`, body, config);
       return response.data as PaymentCreateResponse

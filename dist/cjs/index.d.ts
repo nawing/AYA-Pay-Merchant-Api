@@ -44,6 +44,8 @@ export interface PaymentCreateRequest {
     externalTransactionId: string;
     externalAdditionalData?: string;
     serviceCode: string;
+    MMQR: boolean;
+    timelimit: number;
 }
 export interface PaymentCreateResponse {
     err: number;
@@ -200,6 +202,8 @@ declare class AYAPayMerchantClass {
      * @param {string} options.externalTransactionId
      * @param {string} options.externalAdditionalData
      * @param {string} options.serviceCode
+     * @param {boolean} options.MMQR
+     * @param {number} options.timelimit
      * @returns {Promise<PaymentCreateResponse>}
      */
     requestQR(options: PaymentCreateRequest): Promise<PaymentCreateResponse>;
