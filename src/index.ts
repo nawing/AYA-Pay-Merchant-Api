@@ -1,5 +1,5 @@
-import axios from 'axios';
-import crypto from 'crypto';
+import crypto from 'node:crypto';
+
 /**
  * @Login
  * @Login
@@ -233,8 +233,18 @@ class AYAPayMerchantClass {
       const body = {
         grant_type: 'client_credentials'
       }
-      const response = await axios.post(`${this.#baseUrl}/token`, body, config);
-      const originResponse = response.data as {
+
+      const formBody = new URLSearchParams();
+      Object.entries(body).forEach(([key, value]) => {
+        if (value !== undefined) formBody.append(key, String(value));
+      });
+
+      const response = await fetch(`${this.#baseUrl}/token`, {
+        method: 'POST',
+        headers: config.headers,
+        body: formBody
+      });
+      const originResponse = (await response.json()) as {
         access_token: string;
         scope: string;
         token_type: string;
@@ -268,8 +278,18 @@ class AYAPayMerchantClass {
         phone: this.#phone,
         password: this.#password,
       }
-      const response = await axios.post(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/login`, body, config);
-      const loginResponse = response.data as loginResponse;
+
+      const formBody = new URLSearchParams();
+      Object.entries(body).forEach(([key, value]) => {
+        if (value !== undefined) formBody.append(key, String(value));
+      });
+
+      const response = await fetch(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/login`, {
+        method: 'POST',
+        headers: config.headers,
+        body: formBody
+      });
+      const loginResponse = (await response.json()) as loginResponse;
       this.#apiToken = loginResponse.token.token;
       return loginResponse as loginResponse;
     } catch (error) {
@@ -314,8 +334,18 @@ class AYAPayMerchantClass {
         MMQR: options.MMQR,
         timelimit: options.timelimit,
       }
-      const response = await axios.post(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/v2/requestQRPayment`, body, config);
-      return response.data as PaymentCreateResponse
+
+      const formBody = new URLSearchParams();
+      Object.entries(body).forEach(([key, value]) => {
+        if (value !== undefined) formBody.append(key, String(value));
+      });
+
+      const response = await fetch(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/v2/requestQRPayment`, {
+        method: 'POST',
+        headers: config.headers,
+        body: formBody
+      });
+      return (await response.json()) as PaymentCreateResponse;
     } catch (error) {
       console.error(error)
     }
@@ -341,8 +371,18 @@ class AYAPayMerchantClass {
         externalTransactionId: options.externalTransactionId,
         referenceNumber: options.referenceNumber,
       }
-      const response = await axios.post(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/checkQRPayment`, body, config);
-      return response.data as PaymentStatusResponse
+
+      const formBody = new URLSearchParams();
+      Object.entries(body).forEach(([key, value]) => {
+        if (value !== undefined) formBody.append(key, String(value));
+      });
+
+      const response = await fetch(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/checkQRPayment`, {
+        method: 'POST',
+        headers: config.headers,
+        body: formBody
+      });
+      return (await response.json()) as PaymentStatusResponse;
     } catch (error) {
       console.error(error)
     }
@@ -374,8 +414,18 @@ class AYAPayMerchantClass {
         externalAdditionalData: options.externalAdditionalData,
         serviceCode: options.serviceCode,
       }
-      const response = await axios.post(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/v2/requestPushPayment`, body, config);
-      return response.data as PaymentCreateResponse
+
+      const formBody = new URLSearchParams();
+      Object.entries(body).forEach(([key, value]) => {
+        if (value !== undefined) formBody.append(key, String(value));
+      });
+
+      const response = await fetch(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/v2/requestPushPayment`, {
+        method: 'POST',
+        headers: config.headers,
+        body: formBody
+      });
+      return (await response.json()) as PaymentCreateResponse;
     } catch (error) {
       console.error(error)
     }
@@ -401,8 +451,18 @@ class AYAPayMerchantClass {
         externalTransactionId: options.externalTransactionId,
         referenceNumber: options.referenceNumber,
       }
-      const response = await axios.post(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/checkRequestPayment`, body, config);
-      return response.data as PaymentStatusResponse
+
+      const formBody = new URLSearchParams();
+      Object.entries(body).forEach(([key, value]) => {
+        if (value !== undefined) formBody.append(key, String(value));
+      });
+
+      const response = await fetch(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/checkRequestPayment`, {
+        method: 'POST',
+        headers: config.headers,
+        body: formBody
+      });
+      return (await response.json()) as PaymentStatusResponse;
     } catch (error) {
       console.error(error)
     }

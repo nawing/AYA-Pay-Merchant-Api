@@ -1,6 +1,6 @@
 {
   "name": "aya-pay-merchant-api",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "MMQR, AYA Pay - Integration Package",
   "keywords": [
     "MMQR",
@@ -30,14 +30,12 @@
     "dev": "tsc --watch"
   },
   "devDependencies": {
-    "@types/node": "^20.11.24",
+    "@types/node": "^24.12.3",
     "typescript": "^5.3.3"
   },
   "author": "Naw Ing",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.13.2",
-    "crypto": "^1.0.1",
     "dotenv": "^17.2.2"
   }
 }

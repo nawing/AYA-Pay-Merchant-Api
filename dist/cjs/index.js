@@ -16,8 +16,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _AYAPayMerchantClass_baseUrl, _AYAPayMerchantClass_prefixUrl, _AYAPayMerchantClass_consumerKey, _AYAPayMerchantClass_consumerSecret, _AYAPayMerchantClass_decryptionKey, _AYAPayMerchantClass_phone, _AYAPayMerchantClass_password, _AYAPayMerchantClass_keyToken, _AYAPayMerchantClass_apiToken;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AYAPayMerchantSDK = AYAPayMerchantSDK;
-const axios_1 = __importDefault(require("axios"));
-const crypto_1 = __importDefault(require("crypto"));
+const node_crypto_1 = __importDefault(require("node:crypto"));
 /**
  * @AYAMerchantSDK
  * @AYAMerchantSDK
@@ -85,8 +84,17 @@ class AYAPayMerchantClass {
             const body = {
                 grant_type: 'client_credentials'
             };
-            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/token`, body, config);
-            const originResponse = response.data;
+            const formBody = new URLSearchParams();
+            Object.entries(body).forEach(([key, value]) => {
+                if (value !== undefined)
+                    formBody.append(key, String(value));
+            });
+            const response = await fetch(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/token`, {
+                method: 'POST',
+                headers: config.headers,
+                body: formBody
+            });
+            const originResponse = (await response.json());
             const modifiedResponse = {
                 accessToken: originResponse.access_token,
                 scope: originResponse.scope,
@@ -116,8 +124,17 @@ class AYAPayMerchantClass {
                 phone: __classPrivateFieldGet(this, _AYAPayMerchantClass_phone, "f"),
                 password: __classPrivateFieldGet(this, _AYAPayMerchantClass_password, "f"),
             };
-            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/login`, body, config);
-            const loginResponse = response.data;
+            const formBody = new URLSearchParams();
+            Object.entries(body).forEach(([key, value]) => {
+                if (value !== undefined)
+                    formBody.append(key, String(value));
+            });
+            const response = await fetch(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/login`, {
+                method: 'POST',
+                headers: config.headers,
+                body: formBody
+            });
+            const loginResponse = (await response.json());
             __classPrivateFieldSet(this, _AYAPayMerchantClass_apiToken, loginResponse.token.token, "f");
             return loginResponse;
         }
@@ -163,8 +180,17 @@ class AYAPayMerchantClass {
                 MMQR: options.MMQR,
                 timelimit: options.timelimit,
             };
-            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/v2/requestQRPayment`, body, config);
-            return response.data;
+            const formBody = new URLSearchParams();
+            Object.entries(body).forEach(([key, value]) => {
+                if (value !== undefined)
+                    formBody.append(key, String(value));
+            });
+            const response = await fetch(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/v2/requestQRPayment`, {
+                method: 'POST',
+                headers: config.headers,
+                body: formBody
+            });
+            return (await response.json());
         }
         catch (error) {
             console.error(error);
@@ -191,8 +217,17 @@ class AYAPayMerchantClass {
                 externalTransactionId: options.externalTransactionId,
                 referenceNumber: options.referenceNumber,
             };
-            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/checkQRPayment`, body, config);
-            return response.data;
+            const formBody = new URLSearchParams();
+            Object.entries(body).forEach(([key, value]) => {
+                if (value !== undefined)
+                    formBody.append(key, String(value));
+            });
+            const response = await fetch(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/checkQRPayment`, {
+                method: 'POST',
+                headers: config.headers,
+                body: formBody
+            });
+            return (await response.json());
         }
         catch (error) {
             console.error(error);
@@ -225,8 +260,17 @@ class AYAPayMerchantClass {
                 externalAdditionalData: options.externalAdditionalData,
                 serviceCode: options.serviceCode,
             };
-            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/v2/requestPushPayment`, body, config);
-            return response.data;
+            const formBody = new URLSearchParams();
+            Object.entries(body).forEach(([key, value]) => {
+                if (value !== undefined)
+                    formBody.append(key, String(value));
+            });
+            const response = await fetch(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/v2/requestPushPayment`, {
+                method: 'POST',
+                headers: config.headers,
+                body: formBody
+            });
+            return (await response.json());
         }
         catch (error) {
             console.error(error);
@@ -253,8 +297,17 @@ class AYAPayMerchantClass {
                 externalTransactionId: options.externalTransactionId,
                 referenceNumber: options.referenceNumber,
             };
-            const response = await axios_1.default.post(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/checkRequestPayment`, body, config);
-            return response.data;
+            const formBody = new URLSearchParams();
+            Object.entries(body).forEach(([key, value]) => {
+                if (value !== undefined)
+                    formBody.append(key, String(value));
+            });
+            const response = await fetch(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/checkRequestPayment`, {
+                method: 'POST',
+                headers: config.headers,
+                body: formBody
+            });
+            return (await response.json());
         }
         catch (error) {
             console.error(error);
@@ -270,7 +323,7 @@ class AYAPayMerchantClass {
         try {
             const cipherRaw = Buffer.from(options.paymentResult, 'base64');
             const key = Buffer.from(__classPrivateFieldGet(this, _AYAPayMerchantClass_decryptionKey, "f"));
-            const decipher = crypto_1.default.createDecipheriv('aes-256-ecb', key, null);
+            const decipher = node_crypto_1.default.createDecipheriv('aes-256-ecb', key, null);
             let decrypted = decipher.update(cipherRaw, undefined, 'utf8');
             decrypted += decipher.final('utf8');
             const result = JSON.parse(decrypted);
@@ -290,7 +343,7 @@ class AYAPayMerchantClass {
         try {
             const cipherRaw = Buffer.from(options.refundResult, 'base64');
             const key = Buffer.from(__classPrivateFieldGet(this, _AYAPayMerchantClass_decryptionKey, "f"));
-            const decipher = crypto_1.default.createDecipheriv('aes-256-ecb', key, null);
+            const decipher = node_crypto_1.default.createDecipheriv('aes-256-ecb', key, null);
             let decrypted = decipher.update(cipherRaw, undefined, 'utf8');
             decrypted += decipher.final('utf8');
             const result = JSON.parse(decrypted);
