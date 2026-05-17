@@ -1,4 +1,5 @@
-import { CallbackDecoded, CallbackEncoded, PaymentCreateRequest, PaymentCreateResponse, PaymentStatusRequest, PaymentStatusResponse } from './types';
+import { CallbackDecoded, CallbackEncoded, getTokenResponse, loginResponse, PaymentCreateRequest, PaymentCreateResponse, PaymentStatusRequest, PaymentStatusResponse } from './types';
+export { CallbackDecoded, CallbackEncoded, getTokenResponse, loginResponse, PaymentCreateRequest, PaymentCreateResponse, PaymentStatusRequest, PaymentStatusResponse };
 /**
  * @InstanceOptions
  * @InstanceOptions
@@ -101,4 +102,3 @@ declare class AYAPayMerchantClass {
      */
     verifyCallbackRefund(options: CallbackEncoded): Promise<CallbackDecoded>;
 }
-export {};

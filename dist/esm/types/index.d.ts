@@ -108,6 +108,7 @@ export interface CallbackDecoded {
     amount: number;
     externalAdditionalData: string;
     refFields: {
+        ENDTOENDID?: string;
         OFFERID: string;
         SENDERCLIENT: string;
         SENDERID: string;
@@ -133,6 +134,12 @@ export interface CallbackDecoded {
         TRANSREFID: string;
         IP: string;
         USERID: string;
+        CREDITORACCOUNTID?: string;
+        INVOICENUMBER?: string;
+        DEBITORNAME?: string;
+        DEBITORADDRESS?: string;
+        CREDITORNAME?: string;
+        EXTTRANSID?: string;
     };
     customer: {
         id: string;

@@ -1,6 +1,10 @@
 import crypto from 'node:crypto';
 import {CallbackDecoded, CallbackEncoded, getTokenResponse, loginResponse, PaymentCreateRequest, PaymentCreateResponse, PaymentStatusRequest, PaymentStatusResponse} from './types';
 
+export {
+  CallbackDecoded, CallbackEncoded, getTokenResponse, loginResponse, PaymentCreateRequest, PaymentCreateResponse, PaymentStatusRequest, PaymentStatusResponse
+};
+
 /**
  * @InstanceOptions
  * @InstanceOptions
@@ -15,6 +19,7 @@ export interface InstanceOptions {
   phone: string;
   password: string;
 }
+
 /**
  * @AYAPayMerchantApi
  * @param {InstanceOptions} options
