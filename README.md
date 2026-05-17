@@ -1,6 +1,9 @@
 # 📘 AYA Pay Merchant API Integration Documentation (APIM)
 
-This document provides a professional reference for integrating the **AYAPayMerchant** Node.js/TypeScript package into your application for handling payment and authentication flows.
+An unofficial, personal-use TypeScript API integration package for connecting AYAPay Merchant's MMQR functionalities into Node.js applications.
+It provides a simple class-based wrapper around the AYAPay REST API, handling authentication, token management, dynamic QR generation, status checking, and refunds.
+
+> **Disclaimer:** This is an unofficial, community-driven integration package intended for personal reuse. It is not affiliated with, endorsed by, or maintained by AYA Bank.
 
 ## 🚀 Installation
 
