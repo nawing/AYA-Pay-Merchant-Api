@@ -13,7 +13,7 @@ npm install aya-pay-merchant-api --save
 
 ## Implementation IDEA
 ```javascript
-import { AYAPayMerchantSDK, SDKOptions } from 'aya-pay-merchant-api';
+import { AYAPayMerchantApi, SDKOptions } from 'aya-pay-merchant-api';
 
 const options: SDKOptions = {
   baseUrl: 'https://sandboxxxxx.aya-payx.com/api', // <<< Request AYA Team. I cannot disclose here for security reasons
@@ -25,7 +25,7 @@ const options: SDKOptions = {
   password: 'MERCHANT_APP_PASSWORD', // Password Or Pincode
 };
 
-const ayaPayClient = AYAPayMerchantSDK(options);
+const ayaPayClient = AYAPayMerchantApi(options);
 
 // DEVELOPMENT QR
 const qrResponse = await ayaPayClient.requestQR({
@@ -81,10 +81,10 @@ This configuration object is passed to the initialization function.
 
 ### Initialization Example (TypeScript)
 
-The `AYAPayMerchantSDK` function returns a class instance containing all core methods.
+The `AYAPayMerchantApi` function returns a class instance containing all core methods.
 
 ```javascript
-import { AYAPayMerchantSDK, SDKOptions } from 'aya-pay-merchant-api';
+import { AYAPayMerchantApi, SDKOptions } from 'aya-pay-merchant-api';
 
 const options: SDKOptions = {
   baseUrl: 'https://sandbox.ayapay.com/api', // <<< Request HERE I cannot disclose for security reasons
@@ -94,7 +94,7 @@ const options: SDKOptions = {
   basicKey: '', // Can be an empty string
 };
 
-const ayaPayClient = AYAPayMerchantSDK(options);
+const ayaPayClient = AYAPayMerchantApi(options);
 
 // Now you can call methods like:
 // await ayaPayClient.getToken({ grantType: 'client_credentials' });

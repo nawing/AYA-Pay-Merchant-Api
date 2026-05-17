@@ -150,11 +150,11 @@ export interface CallbackDecoded {
 }
 
 /**
- * @SDKOptions
- * @SDKOptions
- * @SDKOptions
+ * @InstanceOptions
+ * @InstanceOptions
+ * @InstanceOptions
  */
-export interface SDKOptions {
+export interface InstanceOptions {
   baseUrl: string;
   prefixUrl: string;
   consumerKey: string;
@@ -164,13 +164,11 @@ export interface SDKOptions {
   password: string;
 }
 /**
- * @AYAMerchantSDK
- * @AYAMerchantSDK
- * @AYAMerchantSDK
- * @param {SDKOptions} options
+ * @AYAPayMerchantApi
+ * @param {InstanceOptions} options
  * @returns {AYAPayMerchantClass} A status message string.
  */
-export function AYAPayMerchantSDK(options: SDKOptions): AYAPayMerchantClass {
+export function AYAPayMerchantApi(options: InstanceOptions): AYAPayMerchantClass {
   return new AYAPayMerchantClass({
     baseUrl: options.baseUrl,
     prefixUrl: options.prefixUrl,
@@ -199,7 +197,7 @@ class AYAPayMerchantClass {
   #keyToken: string;
   #apiToken: string;
 
-  constructor(options: SDKOptions) {
+  constructor(options: InstanceOptions) {
     this.#baseUrl = options.baseUrl;
     this.#prefixUrl = options.prefixUrl;
     this.#consumerKey = options.consumerKey;

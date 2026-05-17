@@ -1,4 +1,4 @@
-const { AYAPayMerchantSDK } = require("../dist/cjs/index");
+const { AYAPayMerchantApi } = require("../dist/cjs/index");
 const dovenv = require("dotenv");
 dovenv.config()
 
@@ -14,7 +14,7 @@ let callBackIncomingRequest = {
   walletName: 'AYA Pay'
 }
 
-const AYAPaySDK = AYAPayMerchantSDK({
+const AYAPay = AYAPayMerchantApi({
   baseUrl: process.env.BASE_URL,
   consumerKey: process.env.CONSUMER_KEY,
   consumerSecret: process.env.CONSUMER_SECRET,
@@ -25,7 +25,7 @@ const AYAPaySDK = AYAPayMerchantSDK({
 
 
 const start = async () => {
-  const callbackDecoded = await AYAPaySDK.verifyCallback(callBackIncomingRequest)
+  const callbackDecoded = await AYAPay.verifyCallback(callBackIncomingRequest)
   console.log(callbackDecoded)
 }
 

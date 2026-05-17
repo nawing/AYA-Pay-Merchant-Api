@@ -12,13 +12,11 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _AYAPayMerchantClass_baseUrl, _AYAPayMerchantClass_prefixUrl, _AYAPayMerchantClass_consumerKey, _AYAPayMerchantClass_consumerSecret, _AYAPayMerchantClass_decryptionKey, _AYAPayMerchantClass_phone, _AYAPayMerchantClass_password, _AYAPayMerchantClass_keyToken, _AYAPayMerchantClass_apiToken;
 import crypto from 'node:crypto';
 /**
- * @AYAMerchantSDK
- * @AYAMerchantSDK
- * @AYAMerchantSDK
- * @param {SDKOptions} options
+ * @AYAPayMerchantApi
+ * @param {InstanceOptions} options
  * @returns {AYAPayMerchantClass} A status message string.
  */
-export function AYAPayMerchantSDK(options) {
+export function AYAPayMerchantApi(options) {
     return new AYAPayMerchantClass({
         baseUrl: options.baseUrl,
         prefixUrl: options.prefixUrl,

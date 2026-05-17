@@ -15,16 +15,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 var _AYAPayMerchantClass_baseUrl, _AYAPayMerchantClass_prefixUrl, _AYAPayMerchantClass_consumerKey, _AYAPayMerchantClass_consumerSecret, _AYAPayMerchantClass_decryptionKey, _AYAPayMerchantClass_phone, _AYAPayMerchantClass_password, _AYAPayMerchantClass_keyToken, _AYAPayMerchantClass_apiToken;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AYAPayMerchantSDK = AYAPayMerchantSDK;
+exports.AYAPayMerchantApi = AYAPayMerchantApi;
 const node_crypto_1 = __importDefault(require("node:crypto"));
 /**
- * @AYAMerchantSDK
- * @AYAMerchantSDK
- * @AYAMerchantSDK
- * @param {SDKOptions} options
+ * @AYAPayMerchantApi
+ * @param {InstanceOptions} options
  * @returns {AYAPayMerchantClass} A status message string.
  */
-function AYAPayMerchantSDK(options) {
+function AYAPayMerchantApi(options) {
     return new AYAPayMerchantClass({
         baseUrl: options.baseUrl,
         prefixUrl: options.prefixUrl,

@@ -1,10 +1,10 @@
-const { AYAPayMerchantSDK } = require("../dist/cjs/index");
+const { AYAPayMerchantApi } = require("../dist/cjs/index");
 const dovenv = require("dotenv");
 dovenv.config()
 const { performance } = require("perf_hooks")
 
 
-const AYAPaySDK = AYAPayMerchantSDK({
+const AYAPay = AYAPayMerchantApi({
   baseUrl: process.env.BASE_URL,
   consumerKey: process.env.CONSUMER_KEY,
   consumerSecret: process.env.CONSUMER_SECRET,
@@ -18,14 +18,14 @@ const start = async () => {
 
   const startTime = performance.now();
 
-  // const tokenResponse = await AYAPaySDK.getToken();
+  // const tokenResponse = await AYAPay.getToken();
   // console.log(tokenResponse)
   // const end1Time = performance.now();
   // const latency1Ms = (end1Time - startTime).toFixed(3);
   // console.log(`\n--- Successful ---`);
   // console.log(`**Network Latency: ${latency1Ms} ms**`);
 
-  // const loginResponse = await AYAPaySDK.login({
+  // const loginResponse = await AYAPay.login({
   //   phone: process.env.MERCHANT_PHONE,
   //   password: process.env.MERCHANT_PASSWORD,
   // });
@@ -35,7 +35,7 @@ const start = async () => {
   // console.log(`\n--- Successful ---`);
   // console.log(`**Network Latency: ${latency2Ms} ms**`);
 
-  const qrResponse = await AYAPaySDK.requestQR({
+  const qrResponse = await AYAPay.requestQR({
     amount: 5000,
     currency: 'MMK',
     externalTransactionId: 'ORD-' + new Date().getTime(),
@@ -49,7 +49,7 @@ const start = async () => {
   console.log(`\n--- Successful ---`);
   console.log(`**Network Latency: ${latency3Ms} ms**`);
 
-  // const statusResponse = await AYAPaySDK.paymentStatusQR({
+  // const statusResponse = await AYAPay.paymentStatusQR({
   //   referenceNumber: qrResponse.data.referenceNumber,
   //   externalTransactionId: qrResponse.data.externalTransactionId,
   // })
