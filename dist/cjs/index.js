@@ -1,21 +1,10 @@
 "use strict";
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _AYAPayMerchantClass_baseUrl, _AYAPayMerchantClass_prefixUrl, _AYAPayMerchantClass_consumerKey, _AYAPayMerchantClass_consumerSecret, _AYAPayMerchantClass_decryptionKey, _AYAPayMerchantClass_phone, _AYAPayMerchantClass_password, _AYAPayMerchantClass_keyToken, _AYAPayMerchantClass_apiToken;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AYAPayMerchantApi = AYAPayMerchantApi;
+const node_buffer_1 = require("node:buffer");
 const node_crypto_1 = __importDefault(require("node:crypto"));
 /**
  * @AYAPayMerchantApi
@@ -35,35 +24,33 @@ function AYAPayMerchantApi(options) {
 }
 /**
  * @AYAPayMerchantClass
- * @AYAPayMerchantClass
- * @AYAPayMerchantClass
  */
 class AYAPayMerchantClass {
+    #baseUrl;
+    #prefixUrl;
+    #consumerKey;
+    #consumerSecret;
+    #decryptionKey;
+    #phone;
+    #password;
+    #keyToken = '';
+    #apiToken = '';
     constructor(options) {
-        _AYAPayMerchantClass_baseUrl.set(this, void 0);
-        _AYAPayMerchantClass_prefixUrl.set(this, void 0);
-        _AYAPayMerchantClass_consumerKey.set(this, void 0);
-        _AYAPayMerchantClass_consumerSecret.set(this, void 0);
-        _AYAPayMerchantClass_decryptionKey.set(this, void 0);
-        _AYAPayMerchantClass_phone.set(this, void 0);
-        _AYAPayMerchantClass_password.set(this, void 0);
-        _AYAPayMerchantClass_keyToken.set(this, void 0);
-        _AYAPayMerchantClass_apiToken.set(this, void 0);
-        __classPrivateFieldSet(this, _AYAPayMerchantClass_baseUrl, options.baseUrl, "f");
-        __classPrivateFieldSet(this, _AYAPayMerchantClass_prefixUrl, options.prefixUrl, "f");
-        __classPrivateFieldSet(this, _AYAPayMerchantClass_consumerKey, options.consumerKey, "f");
-        __classPrivateFieldSet(this, _AYAPayMerchantClass_consumerSecret, options.consumerSecret, "f");
-        __classPrivateFieldSet(this, _AYAPayMerchantClass_decryptionKey, options.decryptionKey, "f");
-        __classPrivateFieldSet(this, _AYAPayMerchantClass_phone, options.phone, "f");
-        __classPrivateFieldSet(this, _AYAPayMerchantClass_password, options.password, "f");
+        this.#baseUrl = options.baseUrl;
+        this.#prefixUrl = options.prefixUrl;
+        this.#consumerKey = options.consumerKey;
+        this.#consumerSecret = options.consumerSecret;
+        this.#decryptionKey = options.decryptionKey;
+        this.#phone = options.phone;
+        this.#password = options.password;
     }
     /**
      * basicToken
      * @returns
      */
     basicToken() {
-        const rawString = `${__classPrivateFieldGet(this, _AYAPayMerchantClass_consumerKey, "f")}:${__classPrivateFieldGet(this, _AYAPayMerchantClass_consumerSecret, "f")}`;
-        const buffer = Buffer.from(rawString);
+        const rawString = `${this.#consumerKey}:${this.#consumerSecret}`;
+        const buffer = node_buffer_1.Buffer.from(rawString);
         const base64String = buffer.toString('base64');
         return base64String;
     }
@@ -87,7 +74,7 @@ class AYAPayMerchantClass {
                 if (value !== undefined)
                     formBody.append(key, String(value));
             });
-            const response = await fetch(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/token`, {
+            const response = await fetch(`${this.#baseUrl}/token`, {
                 method: 'POST',
                 headers: config.headers,
                 body: formBody
@@ -99,11 +86,12 @@ class AYAPayMerchantClass {
                 tokenType: originResponse.token_type,
                 expiresIn: originResponse.expires_in,
             };
-            __classPrivateFieldSet(this, _AYAPayMerchantClass_keyToken, modifiedResponse.accessToken, "f");
+            this.#keyToken = modifiedResponse.accessToken;
             return modifiedResponse;
         }
         catch (error) {
             console.error(error);
+            throw error;
         }
     }
     /**
@@ -115,29 +103,30 @@ class AYAPayMerchantClass {
             const config = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'Token': `Bearer ${__classPrivateFieldGet(this, _AYAPayMerchantClass_keyToken, "f")}`
+                    'Token': `Bearer ${this.#keyToken}`
                 }
             };
             const body = {
-                phone: __classPrivateFieldGet(this, _AYAPayMerchantClass_phone, "f"),
-                password: __classPrivateFieldGet(this, _AYAPayMerchantClass_password, "f"),
+                phone: this.#phone,
+                password: this.#password,
             };
             const formBody = new URLSearchParams();
             Object.entries(body).forEach(([key, value]) => {
                 if (value !== undefined)
                     formBody.append(key, String(value));
             });
-            const response = await fetch(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/login`, {
+            const response = await fetch(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/login`, {
                 method: 'POST',
                 headers: config.headers,
                 body: formBody
             });
             const loginResponse = (await response.json());
-            __classPrivateFieldSet(this, _AYAPayMerchantClass_apiToken, loginResponse.token.token, "f");
+            this.#apiToken = loginResponse.token.token;
             return loginResponse;
         }
         catch (error) {
             console.error(error);
+            throw error;
         }
     }
     /**
@@ -150,13 +139,7 @@ class AYAPayMerchantClass {
     /**
      * requestQR
      * @param {PaymentCreateRequest} options
-     * @param {string} options.amount
-     * @param {string} options.currency
-     * @param {string} options.externalTransactionId
-     * @param {string} options.externalAdditionalData
-     * @param {string} options.serviceCode
-     * @param {boolean} options.MMQR
-     * @param {number} options.timelimit
+     * ...
      * @returns {Promise<PaymentCreateResponse>}
      */
     async requestQR(options) {
@@ -165,8 +148,8 @@ class AYAPayMerchantClass {
             const config = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'Token': `Bearer ${__classPrivateFieldGet(this, _AYAPayMerchantClass_keyToken, "f")}`,
-                    'Authorization': `Bearer ${__classPrivateFieldGet(this, _AYAPayMerchantClass_apiToken, "f")}`,
+                    'Token': `Bearer ${this.#keyToken}`,
+                    'Authorization': `Bearer ${this.#apiToken}`,
                 }
             };
             const body = {
@@ -183,7 +166,7 @@ class AYAPayMerchantClass {
                 if (value !== undefined)
                     formBody.append(key, String(value));
             });
-            const response = await fetch(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/v2/requestQRPayment`, {
+            const response = await fetch(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/v2/requestQRPayment`, {
                 method: 'POST',
                 headers: config.headers,
                 body: formBody
@@ -192,14 +175,12 @@ class AYAPayMerchantClass {
         }
         catch (error) {
             console.error(error);
+            throw error;
         }
     }
     /**
      * paymentStatusQR
-     * @param {PaymentStatusRequest} options
-     * @param {string} options.referenceNumber
-     * @param {string} options.externalTransactionId
-     * @returns {Promise<PaymentStatusResponse>}
+     * ...
      */
     async paymentStatusQR(options) {
         try {
@@ -207,8 +188,8 @@ class AYAPayMerchantClass {
             const config = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'Token': `Bearer ${__classPrivateFieldGet(this, _AYAPayMerchantClass_keyToken, "f")}`,
-                    'Authorization': `Bearer ${__classPrivateFieldGet(this, _AYAPayMerchantClass_apiToken, "f")}`,
+                    'Token': `Bearer ${this.#keyToken}`,
+                    'Authorization': `Bearer ${this.#apiToken}`,
                 }
             };
             const body = {
@@ -220,7 +201,7 @@ class AYAPayMerchantClass {
                 if (value !== undefined)
                     formBody.append(key, String(value));
             });
-            const response = await fetch(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/checkQRPayment`, {
+            const response = await fetch(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/checkQRPayment`, {
                 method: 'POST',
                 headers: config.headers,
                 body: formBody
@@ -229,17 +210,12 @@ class AYAPayMerchantClass {
         }
         catch (error) {
             console.error(error);
+            throw error;
         }
     }
     /**
      * requestPush
-     * @param {PaymentCreateRequest} options
-     * @param {string} options.amount
-     * @param {string} options.currency
-     * @param {string} options.externalTransactionId
-     * @param {string} options.externalAdditionalData
-     * @param {string} options.serviceCode
-     * @returns {Promise<PaymentCreateResponse>}
+     * ...
      */
     async requestPush(options) {
         try {
@@ -247,8 +223,8 @@ class AYAPayMerchantClass {
             const config = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'Token': `Bearer ${__classPrivateFieldGet(this, _AYAPayMerchantClass_keyToken, "f")}`,
-                    'Authorization': `Bearer ${__classPrivateFieldGet(this, _AYAPayMerchantClass_apiToken, "f")}`,
+                    'Token': `Bearer ${this.#keyToken}`,
+                    'Authorization': `Bearer ${this.#apiToken}`,
                 }
             };
             const body = {
@@ -263,7 +239,7 @@ class AYAPayMerchantClass {
                 if (value !== undefined)
                     formBody.append(key, String(value));
             });
-            const response = await fetch(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/v2/requestPushPayment`, {
+            const response = await fetch(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/v2/requestPushPayment`, {
                 method: 'POST',
                 headers: config.headers,
                 body: formBody
@@ -272,14 +248,12 @@ class AYAPayMerchantClass {
         }
         catch (error) {
             console.error(error);
+            throw error;
         }
     }
     /**
      * paymentStatusPush
-     * @param {PaymentStatusRequest} options
-     * @param {string} options.referenceNumber
-     * @param {string} options.externalTransactionId
-     * @returns {Promise<PaymentStatusResponse>}
+     * ...
      */
     async paymentStatusPush(options) {
         try {
@@ -287,8 +261,8 @@ class AYAPayMerchantClass {
             const config = {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    'Token': `Bearer ${__classPrivateFieldGet(this, _AYAPayMerchantClass_keyToken, "f")}`,
-                    'Authorization': `Bearer ${__classPrivateFieldGet(this, _AYAPayMerchantClass_apiToken, "f")}`,
+                    'Token': `Bearer ${this.#keyToken}`,
+                    'Authorization': `Bearer ${this.#apiToken}`,
                 }
             };
             const body = {
@@ -300,7 +274,7 @@ class AYAPayMerchantClass {
                 if (value !== undefined)
                     formBody.append(key, String(value));
             });
-            const response = await fetch(`${__classPrivateFieldGet(this, _AYAPayMerchantClass_baseUrl, "f")}/${__classPrivateFieldGet(this, _AYAPayMerchantClass_prefixUrl, "f")}/1.0.0/thirdparty/merchant/checkRequestPayment`, {
+            const response = await fetch(`${this.#baseUrl}/${this.#prefixUrl}/1.0.0/thirdparty/merchant/checkRequestPayment`, {
                 method: 'POST',
                 headers: config.headers,
                 body: formBody
@@ -309,18 +283,19 @@ class AYAPayMerchantClass {
         }
         catch (error) {
             console.error(error);
+            throw error;
         }
     }
     /**
      * verifyCallback
-     * @param {CallbackEncoded} options
-     * @param {string} options.paymentResult
-     * @returns {Promise<CallbackDecoded>}
+     * ...
      */
     async verifyCallback(options) {
         try {
-            const cipherRaw = Buffer.from(options.paymentResult, 'base64');
-            const key = Buffer.from(__classPrivateFieldGet(this, _AYAPayMerchantClass_decryptionKey, "f"));
+            if (!options.paymentResult)
+                throw new Error("paymentResult is missing or undefined");
+            const cipherRaw = node_buffer_1.Buffer.from(options.paymentResult, 'base64');
+            const key = node_buffer_1.Buffer.from(this.#decryptionKey);
             const decipher = node_crypto_1.default.createDecipheriv('aes-256-ecb', key, null);
             let decrypted = decipher.update(cipherRaw, undefined, 'utf8');
             decrypted += decipher.final('utf8');
@@ -329,18 +304,19 @@ class AYAPayMerchantClass {
         }
         catch (error) {
             console.error(error);
+            throw error;
         }
     }
     /**
      * verifyCallbackRefund
-     * @param {CallbackEncoded} options
-     * @param {string} options.refundResult
-     * @returns {Promise<CallbackDecoded>}
+     * ...
      */
     async verifyCallbackRefund(options) {
         try {
-            const cipherRaw = Buffer.from(options.refundResult, 'base64');
-            const key = Buffer.from(__classPrivateFieldGet(this, _AYAPayMerchantClass_decryptionKey, "f"));
+            if (!options.refundResult)
+                throw new Error("refundResult is missing or undefined");
+            const cipherRaw = node_buffer_1.Buffer.from(options.refundResult, 'base64');
+            const key = node_buffer_1.Buffer.from(this.#decryptionKey);
             const decipher = node_crypto_1.default.createDecipheriv('aes-256-ecb', key, null);
             let decrypted = decipher.update(cipherRaw, undefined, 'utf8');
             decrypted += decipher.final('utf8');
@@ -349,7 +325,7 @@ class AYAPayMerchantClass {
         }
         catch (error) {
             console.error(error);
+            throw error;
         }
     }
 }
-_AYAPayMerchantClass_baseUrl = new WeakMap(), _AYAPayMerchantClass_prefixUrl = new WeakMap(), _AYAPayMerchantClass_consumerKey = new WeakMap(), _AYAPayMerchantClass_consumerSecret = new WeakMap(), _AYAPayMerchantClass_decryptionKey = new WeakMap(), _AYAPayMerchantClass_phone = new WeakMap(), _AYAPayMerchantClass_password = new WeakMap(), _AYAPayMerchantClass_keyToken = new WeakMap(), _AYAPayMerchantClass_apiToken = new WeakMap();

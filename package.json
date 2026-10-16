@@ -1,7 +1,7 @@
 {
-  "name": "aya-pay-merchant-api",
+  "name": "@mmpay/aya-mmqr",
   "version": "1.0.13",
-  "description": "MMQR, AYA Pay - Integration Package",
+  "description": "MMQR, AYA Pay - Integration Package By MyanMyanPay",
   "keywords": [
     "MMQR",
     "AYA Pay"
@@ -11,9 +11,14 @@
   "types": "./dist/esm/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js",
-      "types": "./dist/esm/index.d.ts"
+      "import": {
+        "types": "./dist/esm/index.d.ts",
+        "default": "./dist/esm/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
     }
   },
   "repository": {
@@ -24,18 +29,27 @@
     "url": "https://github.com/nawing/AYA-Pay-Merchant-API/issues"
   },
   "homepage": "https://github.com/nawing/AYA-Pay-Merchant-API#readme",
+  "engines": {
+    "node": "^26.6.5",
+    "bun": ">=1.4.3"
+  },
   "scripts": {
-    "build": "npm run clean && tsc && tsc -p tsconfig.cjs.json",
     "clean": "rm -rf dist",
-    "dev": "tsc --watch"
+    "build:esm": "tsc -p tsconfig.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs",
+    "test": "node --test test/test.js",
+    "test:bun": "bun test test/test.js",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@types/node": "^24.12.3",
-    "typescript": "^5.3.3"
+    "dotenv": "^17.2.2",
+    "typescript": "^5.4.0",
+    "@types/node": "^26.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "author": "Naw Ing",
-  "license": "ISC",
-  "dependencies": {
-    "dotenv": "^17.2.2"
-  }
+  "license": "ISC"
 }

@@ -1,4 +1,6 @@
+import {Buffer} from 'node:buffer';
 import crypto from 'node:crypto';
+
 import {CallbackDecoded, CallbackEncoded, getTokenResponse, loginResponse, PaymentCreateRequest, PaymentCreateResponse, PaymentStatusRequest, PaymentStatusResponse} from './types';
 
 export {
@@ -6,8 +8,6 @@ export {
 };
 
 /**
- * @InstanceOptions
- * @InstanceOptions
  * @InstanceOptions
  */
 export interface InstanceOptions {
@@ -36,9 +36,8 @@ export function AYAPayMerchantApi(options: InstanceOptions): AYAPayMerchantClass
     password: options.password,
   })
 }
+
 /**
- * @AYAPayMerchantClass
- * @AYAPayMerchantClass
  * @AYAPayMerchantClass
  */
 class AYAPayMerchantClass {
@@ -51,8 +50,8 @@ class AYAPayMerchantClass {
   readonly #phone: string;
   readonly #password: string;
 
-  #keyToken: string;
-  #apiToken: string;
+  #keyToken: string = '';
+  #apiToken: string = '';
 
   constructor(options: InstanceOptions) {
     this.#baseUrl = options.baseUrl;
@@ -63,6 +62,7 @@ class AYAPayMerchantClass {
     this.#phone = options.phone;
     this.#password = options.password;
   }
+
   /**
    * basicToken
    * @returns
@@ -73,6 +73,7 @@ class AYAPayMerchantClass {
     const base64String: string = buffer.toString('base64');
     return base64String;
   }
+
   /**
    * getToken
    * @returns {Promise<getTokenResponse>}
@@ -114,9 +115,11 @@ class AYAPayMerchantClass {
       this.#keyToken = modifiedResponse.accessToken;
       return modifiedResponse;
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      throw error;
     }
   }
+
   /**
    * login
    * @returns {Promise<loginResponse>}
@@ -146,11 +149,13 @@ class AYAPayMerchantClass {
       });
       const loginResponse = (await response.json()) as loginResponse;
       this.#apiToken = loginResponse.token.token;
-      return loginResponse as loginResponse;
+      return loginResponse;
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      throw error;
     }
   }
+
   /**
    * authenticate
    */
@@ -158,16 +163,11 @@ class AYAPayMerchantClass {
     await this.getToken()
     await this.login()
   }
+
   /**
    * requestQR
    * @param {PaymentCreateRequest} options
-   * @param {string} options.amount
-   * @param {string} options.currency
-   * @param {string} options.externalTransactionId
-   * @param {string} options.externalAdditionalData
-   * @param {string} options.serviceCode
-   * @param {boolean} options.MMQR
-   * @param {number} options.timelimit
+   * ...
    * @returns {Promise<PaymentCreateResponse>}
    */
   public async requestQR(options: PaymentCreateRequest): Promise<PaymentCreateResponse> {
@@ -202,15 +202,14 @@ class AYAPayMerchantClass {
       });
       return (await response.json()) as PaymentCreateResponse;
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      throw error;
     }
   }
+
   /**
    * paymentStatusQR
-   * @param {PaymentStatusRequest} options
-   * @param {string} options.referenceNumber
-   * @param {string} options.externalTransactionId
-   * @returns {Promise<PaymentStatusResponse>}
+   * ...
    */
   public async paymentStatusQR(options: PaymentStatusRequest): Promise<PaymentStatusResponse> {
     try {
@@ -239,18 +238,14 @@ class AYAPayMerchantClass {
       });
       return (await response.json()) as PaymentStatusResponse;
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      throw error;
     }
   }
+
   /**
    * requestPush
-   * @param {PaymentCreateRequest} options
-   * @param {string} options.amount
-   * @param {string} options.currency
-   * @param {string} options.externalTransactionId
-   * @param {string} options.externalAdditionalData
-   * @param {string} options.serviceCode
-   * @returns {Promise<PaymentCreateResponse>}
+   * ...
    */
   public async requestPush(options: PaymentCreateRequest): Promise<PaymentCreateResponse> {
     try {
@@ -282,15 +277,14 @@ class AYAPayMerchantClass {
       });
       return (await response.json()) as PaymentCreateResponse;
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      throw error;
     }
   }
+
   /**
    * paymentStatusPush
-   * @param {PaymentStatusRequest} options
-   * @param {string} options.referenceNumber
-   * @param {string} options.externalTransactionId
-   * @returns {Promise<PaymentStatusResponse>}
+   * ...
    */
   public async paymentStatusPush(options: PaymentStatusRequest): Promise<PaymentStatusResponse> {
     try {
@@ -319,45 +313,48 @@ class AYAPayMerchantClass {
       });
       return (await response.json()) as PaymentStatusResponse;
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      throw error;
     }
   }
+
   /**
    * verifyCallback
-   * @param {CallbackEncoded} options
-   * @param {string} options.paymentResult
-   * @returns {Promise<CallbackDecoded>}
+   * ...
    */
   public async verifyCallback(options: CallbackEncoded): Promise<CallbackDecoded> {
     try {
+      if (!options.paymentResult) throw new Error("paymentResult is missing or undefined");
       const cipherRaw = Buffer.from(options.paymentResult, 'base64');
       const key = Buffer.from(this.#decryptionKey);
       const decipher = crypto.createDecipheriv('aes-256-ecb', key, null);
       let decrypted = decipher.update(cipherRaw, undefined, 'utf8');
       decrypted += decipher.final('utf8');
       const result: CallbackDecoded = JSON.parse(decrypted) as CallbackDecoded;
-      return result as CallbackDecoded;
+      return result;
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      throw error;
     }
   }
+
   /**
    * verifyCallbackRefund
-   * @param {CallbackEncoded} options
-   * @param {string} options.refundResult
-   * @returns {Promise<CallbackDecoded>}
+   * ...
    */
   public async verifyCallbackRefund(options: CallbackEncoded): Promise<CallbackDecoded> {
     try {
+      if (!options.refundResult) throw new Error("refundResult is missing or undefined");
       const cipherRaw = Buffer.from(options.refundResult, 'base64');
       const key = Buffer.from(this.#decryptionKey);
       const decipher = crypto.createDecipheriv('aes-256-ecb', key, null);
       let decrypted = decipher.update(cipherRaw, undefined, 'utf8');
       decrypted += decipher.final('utf8');
       const result: CallbackDecoded = JSON.parse(decrypted) as CallbackDecoded;
-      return result as CallbackDecoded;
+      return result;
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      throw error;
     }
   }
 }

@@ -1,18 +1,19 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "ES2020",
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "declaration": true,
-    "outDir": "dist/esm",
-    "strict": false,
-    "moduleResolution": "Node",
+    "outDir": "./dist/esm",
+    "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "types": [
       "node"
     ]
   },
   "include": [
-    "src"
+    "src/**/*"
   ]
 }
