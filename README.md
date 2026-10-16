@@ -10,13 +10,13 @@ It provides a simple class-based wrapper around the AYAPay REST API, handling au
 Install the package via npm:
 
 ```bash
-npm install aya-pay-merchant-api --save
+npm install @mmpay/aya-mmqr --save
 ```
 
 
 ## Implementation IDEA
 ```javascript
-import { AYAPayMerchantApi, SDKOptions } from 'aya-pay-merchant-api';
+import { AYAPayMerchantApi, SDKOptions } from '@mmpay/aya-mmqr';
 
 const options: SDKOptions = {
   baseUrl: 'https://sandboxxxxx.aya-payx.com/api', // <<< Request AYA Team. I cannot disclose here for security reasons
@@ -87,7 +87,7 @@ This configuration object is passed to the initialization function.
 The `AYAPayMerchantApi` function returns a class instance containing all core methods.
 
 ```javascript
-import { AYAPayMerchantApi, SDKOptions } from 'aya-pay-merchant-api';
+import { AYAPayMerchantApi, SDKOptions } from '@mmpay/aya-mmqr';
 
 const options: SDKOptions = {
   baseUrl: 'https://sandbox.ayapay.com/api', // <<< Request HERE I cannot disclose for security reasons
