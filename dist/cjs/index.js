@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AYAPayMerchantApi = AYAPayMerchantApi;
-const node_buffer_1 = require("node:buffer");
-const node_crypto_1 = __importDefault(require("node:crypto"));
+const buffer_1 = require("buffer");
+const crypto_1 = __importDefault(require("crypto"));
 /**
  * @AYAPayMerchantApi
  * @param {InstanceOptions} options
@@ -50,7 +50,7 @@ class AYAPayMerchantClass {
      */
     basicToken() {
         const rawString = `${this.#consumerKey}:${this.#consumerSecret}`;
-        const buffer = node_buffer_1.Buffer.from(rawString);
+        const buffer = buffer_1.Buffer.from(rawString);
         const base64String = buffer.toString('base64');
         return base64String;
     }
@@ -294,9 +294,9 @@ class AYAPayMerchantClass {
         try {
             if (!options.paymentResult)
                 throw new Error("paymentResult is missing or undefined");
-            const cipherRaw = node_buffer_1.Buffer.from(options.paymentResult, 'base64');
-            const key = node_buffer_1.Buffer.from(this.#decryptionKey);
-            const decipher = node_crypto_1.default.createDecipheriv('aes-256-ecb', key, null);
+            const cipherRaw = buffer_1.Buffer.from(options.paymentResult, 'base64');
+            const key = buffer_1.Buffer.from(this.#decryptionKey);
+            const decipher = crypto_1.default.createDecipheriv('aes-256-ecb', key, null);
             let decrypted = decipher.update(cipherRaw, undefined, 'utf8');
             decrypted += decipher.final('utf8');
             const result = JSON.parse(decrypted);
@@ -315,9 +315,9 @@ class AYAPayMerchantClass {
         try {
             if (!options.refundResult)
                 throw new Error("refundResult is missing or undefined");
-            const cipherRaw = node_buffer_1.Buffer.from(options.refundResult, 'base64');
-            const key = node_buffer_1.Buffer.from(this.#decryptionKey);
-            const decipher = node_crypto_1.default.createDecipheriv('aes-256-ecb', key, null);
+            const cipherRaw = buffer_1.Buffer.from(options.refundResult, 'base64');
+            const key = buffer_1.Buffer.from(this.#decryptionKey);
+            const decipher = crypto_1.default.createDecipheriv('aes-256-ecb', key, null);
             let decrypted = decipher.update(cipherRaw, undefined, 'utf8');
             decrypted += decipher.final('utf8');
             const result = JSON.parse(decrypted);

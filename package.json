@@ -1,6 +1,6 @@
 {
   "name": "@mmpay/aya-mmqr",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "MMQR, AYA Pay - Integration Package By MyanMyanPay",
   "keywords": [
     "MMQR",
@@ -30,22 +30,21 @@
   },
   "homepage": "https://github.com/nawing/AYA-Pay-Merchant-API#readme",
   "engines": {
-    "node": "^26.6.5",
     "bun": ">=1.4.3"
   },
   "scripts": {
     "clean": "rm -rf dist",
+    "check": "tsc --noEmit",
     "build:esm": "tsc -p tsconfig.json",
     "build:cjs": "tsc -p tsconfig.cjs.json",
-    "build": "npm run clean && npm run build:esm && npm run build:cjs",
-    "test": "node --test test/test.js",
-    "test:bun": "bun test test/test.js",
-    "prepublishOnly": "npm run build"
+    "build": "bun run clean && bun run check && bun run build:esm && bun run build:cjs",
+    "test": "bun test",
+    "prepublishOnly": "bun run build"
   },
   "devDependencies": {
+    "@types/bun": "^1.4.3",
     "dotenv": "^17.2.2",
-    "typescript": "^5.4.0",
-    "@types/node": "^26.0.0"
+    "typescript": "^5.4.0"
   },
   "publishConfig": {
     "access": "public"

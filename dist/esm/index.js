@@ -1,5 +1,5 @@
-import { Buffer } from 'node:buffer';
-import crypto from 'node:crypto';
+import { Buffer } from 'buffer';
+import crypto from 'crypto';
 /**
  * @AYAPayMerchantApi
  * @param {InstanceOptions} options
